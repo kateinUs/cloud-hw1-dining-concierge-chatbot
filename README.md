@@ -14,8 +14,8 @@ class at Columbia University and New York University.
 4. Start sending messages to test the chatbot interaction.
 
 ## Group Member ##
-Huimin Zhang hz2466@nyu.edu
-Liangzhou Su ls5399@nyu.edu
+* Huimin Zhang hz2466@nyu.edu
+* Liangzhou Su ls5399@nyu.edu
 
 ## S3 URL to my website ##
 http://nyu-f2022-hz2466.s3-website.us-east-2.amazonaws.com/
