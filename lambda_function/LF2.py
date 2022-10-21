@@ -50,8 +50,9 @@ def get_slots(message):
     dining_time = message['MessageAttributes'].get('diningTime').get('StringValue')
     people = message['MessageAttributes'].get('numOfPeople').get('StringValue')
     email_ads = message['MessageAttributes'].get('emailAddress').get('StringValue')
+    phone_number = message['MessageAttributes'].get('phoneNumber').get('StringValue')
 
-    return cuisine, location, dining_date, dining_time, people, email_ads
+    return cuisine, location, dining_date, dining_time, people, email_ads, phone_number
 
 
 # Function to establish OpenSearch connection
@@ -94,11 +95,6 @@ def get_restaurant(table, suggestion_id_list):
     restaurant_list = []
     for suggestion_id in suggestion_id_list:
         restaurant_dict = {}
-        # restaurant_details = table.get_item(
-        #     Key={
-        #         'id': suggestion_id,
-        #     }
-        # )
         resp = table.query(KeyConditionExpression=Key('id').eq(suggestion_id))
         if resp.get('Items', None) is None:
             continue
@@ -112,17 +108,19 @@ def get_restaurant(table, suggestion_id_list):
 
 
 #  Function to provide template from sending message by email
-def get_message(restaurant_list, cuisine, location, date, dining_time, people, email):
+def get_message(restaurant_list, cuisine, location, date, dining_time, people, email, phone):
     email_message = "Here are a few {} cuisine recommendations in {} for {} people, on {} at {}. ".format(cuisine,
                                                                                                           location,
                                                                                                           people, date,
                                                                                                           dining_time)
+    i=1
     for restaurant_dict in restaurant_list:
-        email_message = email_message + "Restaurant: {}. It has {} reviews with an average {} rating. The address is: {}.".format(
-            restaurant_dict['name'], restaurant_dict['review_count'], restaurant_dict['rating'],
+        email_message = email_message + "RESTAURANT {}: {}. It has {} reviews with an average {} rating. The address is: {}.".format(
+            i, restaurant_dict['name'], restaurant_dict['review_count'], restaurant_dict['rating'],
             restaurant_dict['address'])
+        i += 1
 
-    email_message = email_message + "Your recommendations was sent to: {} . Enjoy your meal!".format(email)
+    email_message = email_message + "Your recommendations was sent to: {}. Your phone number is: {}. Enjoy your meal!".format(email, phone)
     return email_message
 
 
@@ -171,7 +169,7 @@ def lambda_handler(event, context):
         sqs, message = get_sqsQueueMessage()
         logger.info(f"GET MESSAGE: {message}")
 
-        cuisine, location, date, dining_time, people, email = get_slots(message)
+        cuisine, location, date, dining_time, people, email, phone = get_slots(message)
 
         os = connect_openSearch()
         suggestion_id_list = get_id(os, cuisine)
@@ -180,7 +178,7 @@ def lambda_handler(event, context):
         restaurant_list = get_restaurant(table, suggestion_id_list)
         logger.info(f"SUGGESTION RESTAURANTS READY: {restaurant_list}")
         logger.info("START TO SEND EMAIL")
-        email_message = get_message(restaurant_list, cuisine, location, date, dining_time, people, email)
+        email_message = get_message(restaurant_list, cuisine, location, date, dining_time, people, email, phone)
         logger.info(f"EMAIL CONTENT: {email_message}")
         send_email(email, email_message)
         logger.info("DONE WITH SENDING EMAIL")
