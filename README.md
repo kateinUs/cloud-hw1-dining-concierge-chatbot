@@ -18,4 +18,4 @@ class at Columbia University and New York University.
 * Liangzhou Su ls5399@nyu.edu
 
 ## S3 URL to my website ##
-http://nyu-f2022-hz2466.s3-website.us-east-2.amazonaws.com/
+http://nyu-fall2022.s3-website-us-east-1.amazonaws.com/
