@@ -10,9 +10,6 @@ from decimal import Decimal
 from requests_aws4auth import AWS4Auth
 from opensearchpy import OpenSearch, RequestsHttpConnection
 
-# from requests_aws4auth import AWS4Auth
-# from opensearchpy import OpenSearch, RequestsHttpConnection
-
 # Dictionary for checking for duplicate restaurants
 restaurant_dict = {}
 
