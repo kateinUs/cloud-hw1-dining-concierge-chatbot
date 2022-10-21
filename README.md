@@ -19,3 +19,13 @@ class at Columbia University and New York University.
 
 ## S3 URL to my website ##
 http://nyu-fall2022.s3-website-us-east-1.amazonaws.com/
+
+## Demo
+#### Chatbot Screenshoots
+<img src=demo/demo1.png width=400/>
+<img src=demo/demo2.png width=400/>
+<img src=demo/demo3.png width=400/>
+<img src=demo/demo4.png width=400/>
+
+#### Email received
+<img src=demo/Email_received.png width=400/>
